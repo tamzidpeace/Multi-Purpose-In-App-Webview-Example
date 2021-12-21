@@ -7,3 +7,4 @@ export 'package:weview/controller/app.controller.dart';
 export 'package:weview/view/widget/back_next_reload.widget.dart';
 export 'package:weview/view/widget/search_bar.widget.dart';
 export 'package:weview/view/widget/web_view.widget.dart';
+export 'package:weview/utils/initial_data.util.dart';

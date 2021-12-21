@@ -1,10 +1,9 @@
 import 'dart:io' show Platform;
 import 'utils/export.util.dart';
 
-
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.orange,
+    statusBarColor: Colors.transparent,
   ));
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +20,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Man.Go',
       home: ManGoInAppWebView(),
     );
   }
