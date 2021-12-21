@@ -41,6 +41,7 @@ dependencies:
   connectivity_plus: ^2.1.0
   device_info_plus: ^3.2.0
   location: ^4.3.0
+  mac_address: ^1.0.0
 
 dev_dependencies:
   flutter_test:

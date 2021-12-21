@@ -1,12 +1,16 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+
+import 'package:location/location.dart';
 import 'package:weview/utils/export.util.dart';
 
 class AppController {
   double progress = 0;
   late StreamSubscription subscription;
   late bool isConnected;
+  late String platformVersion;
+  late LocationData locationData;
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
     android: AndroidInAppWebViewOptions(
@@ -16,6 +20,7 @@ class AppController {
 
   Future<void> getInfo(InAppWebViewController controller) async {
     String ip = await getIP();
+    await getLocation();
     controller.addJavaScriptHandler(
       handlerName: 'AjaxHandler',
       callback: (args) {
@@ -29,8 +34,8 @@ class AppController {
             return {'getData': 'Mac Address: 00:0a:95:9d:68:16'};
 
           case "location":
-            log('Location: ' 'Location: Dhaka');
-            return {'getData': 'Location: Dhaka'};
+            // log('Location: ' 'Location: ${getLocation()}');
+            return {'getData': 'Location: ${getLocation()}'};
 
           case "connection":
             log('Connection: ' + isConnected.toString());
@@ -56,5 +61,32 @@ class AppController {
     } else {
       isConnected = false;
     }
+  }
+
+  Future<dynamic> getLocation() async {
+    Location location = Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+    log('location: $locationData');
+    // return locationData.toString();
   }
 }
