@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:weview/utils/export.util.dart';
 
 class Webview extends StatefulWidget {
