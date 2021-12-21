@@ -1,4 +1,4 @@
-package com.example.in_app_web_view
+package com.corecrete.weview
 
 import io.flutter.embedding.android.FlutterActivity
 

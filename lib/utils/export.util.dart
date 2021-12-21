@@ -1,0 +1,9 @@
+export 'package:flutter/material.dart';
+export 'package:flutter/services.dart';
+export 'package:flutter_inappwebview/flutter_inappwebview.dart';
+export 'package:weview/view/app.dart';
+export 'package:weview/utils/const.util.dart';
+export 'package:weview/controller/app.controller.dart';
+export 'package:weview/view/widget/back_next_reload.widget.dart';
+export 'package:weview/view/widget/search_bar.widget.dart';
+export 'package:weview/view/widget/web_view.widget.dart';

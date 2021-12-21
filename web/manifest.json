@@ -1,6 +1,6 @@
 {
-    "name": "in_app_web_view",
-    "short_name": "in_app_web_view",
+    "name": "weview",
+    "short_name": "weview",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
