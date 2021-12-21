@@ -1,9 +1,32 @@
+import 'dart:developer';
+
 import 'package:weview/utils/export.util.dart';
 
-class Webview extends StatelessWidget {
-  Webview({Key? key}) : super(key: key);
+class Webview extends StatefulWidget {
+  const Webview({Key? key}) : super(key: key);
 
+  @override
+  State<Webview> createState() => _WebviewState();
+}
+
+class _WebviewState extends State<Webview> {
   final AppController _ctrl = AppController();
+
+  @override
+  initState() {
+    super.initState();
+    _ctrl.subscription = Connectivity().onConnectivityChanged.listen(
+      (ConnectivityResult result) {
+        _ctrl.isConnectedToInternet(result);
+      },
+    );
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    _ctrl.subscription.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {

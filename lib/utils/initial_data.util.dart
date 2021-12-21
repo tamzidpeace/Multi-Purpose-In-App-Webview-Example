@@ -19,7 +19,7 @@ var initailData = """
                                               .callHandler('handlerFooWithArgs', 1, true, ['bar', 5], {foo: 'baz'}, result);
 
                                             window.flutter_inappwebview
-                                              .callHandler('AjaxHandler', 'ip');
+                                              .callHandler('AjaxHandler', 'connection');
 
 
 

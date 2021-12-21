@@ -1,10 +1,12 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:weview/utils/export.util.dart';
 
 class AppController {
   double progress = 0;
+  late StreamSubscription subscription;
+  late bool isConnected;
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
     android: AndroidInAppWebViewOptions(
@@ -31,8 +33,8 @@ class AppController {
             return {'getData': 'Location: Dhaka'};
 
           case "connection":
-            log('Connection: ' 'is_connected: true');
-            return {'getData': 'is_connected: true'};
+            log('Connection: ' + isConnected.toString());
+            return {'getData': isConnected.toString()};
         }
       },
     );
@@ -46,5 +48,13 @@ class AppController {
       }
     }
     return _ip;
+  }
+
+  Future<void> isConnectedToInternet(result) async {
+    if (result == ConnectivityResult.mobile || result == ConnectivityResult.wifi) {
+      isConnected = true;
+    } else {
+      isConnected = false;
+    }
   }
 }

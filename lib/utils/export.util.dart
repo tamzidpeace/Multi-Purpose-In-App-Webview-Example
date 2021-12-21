@@ -8,3 +8,4 @@ export 'package:weview/view/widget/back_next_reload.widget.dart';
 export 'package:weview/view/widget/search_bar.widget.dart';
 export 'package:weview/view/widget/web_view.widget.dart';
 export 'package:weview/utils/initial_data.util.dart';
+export 'package:connectivity_plus/connectivity_plus.dart';
