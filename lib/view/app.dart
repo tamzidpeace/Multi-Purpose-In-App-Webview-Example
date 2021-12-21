@@ -13,7 +13,7 @@ class ManGoInAppWebView extends StatelessWidget {
           child: const Text('App Name'),
         ),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: Webview(),
       ),
     );
