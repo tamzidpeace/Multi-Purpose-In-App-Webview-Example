@@ -26,7 +26,7 @@ class AppController {
       callback: (args) async {
         // log('arags: ' + args.toString());
         //* args = [ip, location, connection, mac]
-        String _args = args[1].toString();
+        String _args = args[0].toString();
 
         //! important:: unable to call async function in switch-case. so I have used if else
 
