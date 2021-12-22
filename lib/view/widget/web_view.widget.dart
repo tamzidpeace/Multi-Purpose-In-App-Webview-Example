@@ -1,35 +1,16 @@
 import 'dart:developer';
 
+import 'package:get/get.dart';
 import 'package:weview/utils/export.util.dart';
 import 'package:weview/view/barcode_scanner.dart';
 
-class Webview extends StatefulWidget {
-  const Webview({Key? key}) : super(key: key);
 
-  @override
-  State<Webview> createState() => _WebviewState();
-}
 
-class _WebviewState extends State<Webview> {
-  final AppController _ctrl = AppController();
+class Webview extends StatelessWidget {
+   Webview({Key? key}) : super(key: key);
+  final AppController _ctrl = Get.put<AppController>(AppController()) ;
 
-  @override
-  initState() {
-    super.initState();
-    _ctrl.subscription = Connectivity().onConnectivityChanged.listen(
-      (ConnectivityResult result) {
-        // log(result.toString());
-        _ctrl.isConnectedToInternet(result);
-      },
-    );
-    // _ctrl.getDeviceInfo();
-  }
-
-  @override
-  dispose() {
-    super.dispose();
-    _ctrl.subscription.cancel();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
