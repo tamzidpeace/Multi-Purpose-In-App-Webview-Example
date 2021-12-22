@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:location/location.dart';
 import 'package:weview/utils/export.util.dart';
 
@@ -11,6 +12,7 @@ class AppController {
   late bool isConnected;
   late String platformVersion;
   late LocationData locationData;
+  Map deviceInfo = {};
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
     android: AndroidInAppWebViewOptions(
@@ -19,28 +21,41 @@ class AppController {
   );
 
   Future<void> getInfo(InAppWebViewController controller) async {
-    String ip = await getIP();
-    await getLocation();
     controller.addJavaScriptHandler(
       handlerName: 'AjaxHandler',
-      callback: (args) {
-        switch (args[0].toString()) {
-          case "ip":
-            log('IP Address: ' + ip);
-            return {'getData': ip};
+      callback: (args) async {
+        // log('arags: ' + args.toString());
+        //* args = [ip, location, connection, mac]
+        String _args = args[1].toString();
 
-          case "mac":
-            log('MAC Address: ' 'Mac Address: 00:0a:95:9d:68:16');
-            return {'getData': 'Mac Address: 00:0a:95:9d:68:16'};
+        //! important:: unable to call async function in switch-case. so I have used if else
 
-          case "location":
-            // log('Location: ' 'Location: ${getLocation()}');
-            return {'getData': 'Location: ${getLocation()}'};
+        if (_args == 'ip') {
+          String ip = await getIP();
+          log('IP Address: ' + ip);
+          return {'getData': ip};
+        } else if (_args == 'location') {
+          try {
+            var res = await getLocation();
+            log('location: ' + res.toString());
+            return {'getData': 'Location: ${res.toString()}'};
+          } catch (e) {
+            log(e.toString());
+          }
+        } else if (_args == 'connection') {
+          log('Connection: ' + isConnected.toString());
+          return {'getData': isConnected.toString()};
+        } else if (_args == 'mac') {
+          Map deviceInfo = await getDeviceInfo();
+          log(deviceInfo.toString());
+          //todo:: Please fetch your required info
 
-          case "connection":
-            log('Connection: ' + isConnected.toString());
-            return {'getData': isConnected.toString()};
-        }
+          log('MAC Address: ' 'Mac Address: 00:0a:95:9d:68:16');
+          return {'getData': 'Mac Address: 00:0a:95:9d:68:16'};
+        } else if (_args == 'bcs') {
+          
+          return {'getData': 'Mac Address: 00:0a:95:9d:68:16'};
+        } 
       },
     );
   }
@@ -56,11 +71,12 @@ class AppController {
   }
 
   Future<void> isConnectedToInternet(result) async {
-    if (result == ConnectivityResult.mobile || result == ConnectivityResult.wifi) {
+    if (result.toString() == 'ConnectivityResult.mobile' || result.toString() == 'ConnectivityResult.wifi') {
       isConnected = true;
     } else {
       isConnected = false;
     }
+    // log(isConnected.toString());
   }
 
   Future<dynamic> getLocation() async {
@@ -73,6 +89,7 @@ class AppController {
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
       if (!_serviceEnabled) {
+        log('location service not enabled');
         return;
       }
     }
@@ -81,12 +98,25 @@ class AppController {
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
+        log('location permission denied');
         return;
       }
     }
 
-    locationData = await location.getLocation();
-    log('location: $locationData');
-    // return locationData.toString();
+    try {
+      locationData = await location.getLocation();
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return {'latitude': locationData.latitude, 'longitude': locationData.longitude};
+    // locationData.toString();
+  }
+
+  Future<Map> getDeviceInfo() async {
+    final deviceInfoPlugin = DeviceInfoPlugin();
+    final deviceInfo = await deviceInfoPlugin.deviceInfo;
+    final map = deviceInfo.toMap();
+    return map;
   }
 }

@@ -7,21 +7,30 @@ var initailData = """
                             </head>
                             <body>
                                 <h1>JavaScript Handlers</h1>
+                                <button onclick="call()"> Call </button>
                                 <script>
+
+                                  call = () => {
+                                    console.log('bcs');
+                                  }
+
                                     window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {
                                         window.flutter_inappwebview.callHandler('handlerFoo')
                                           .then(function(result) {
                                             // print to the console the data coming
                                             // from the Flutter side.
-                                            console.log(JSON.stringify(result));
+                                            // console.log(JSON.stringify(result));                                          
+                                            // window.flutter_inappwebview
+                                            //   .callHandler('handlerFooWithArgs', 1, true, ['bar', 5], {foo: 'baz'}, result);
+
+                                            window.flutter_inappwebview
+                                              .callHandler('AjaxHandler', 'ip', 'location', 'connection', 'mac', 'bcs')
+                                              .then(function(result) {
+                                                 console.log(JSON.stringify(result));
+                                            });
+
                                             
-                                            window.flutter_inappwebview
-                                              .callHandler('handlerFooWithArgs', 1, true, ['bar', 5], {foo: 'baz'}, result);
-
-                                            window.flutter_inappwebview
-                                              .callHandler('AjaxHandler', 'location');
-
-
+                                          
 
                                         });
                                     });
