@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:get/get.dart';
+import 'package:weview/view/wvx.dart';
 
 import 'utils/export.util.dart';
 
@@ -21,9 +22,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return  GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ManGoInAppWebView(),
+      home: MyWebView(),
     );
   }
 }

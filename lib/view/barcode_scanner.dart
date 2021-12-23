@@ -3,13 +3,16 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:webviewx/webviewx.dart';
 import 'package:weview/utils/export.util.dart';
 
 class BarcodeScanner extends StatefulWidget {
-  BarcodeScanner({Key? key, required this.appController}) : super(key: key);
+  BarcodeScanner({Key? key, required this.appController, required this.iawvctrl}) : super(key: key);
 
   final AppController appController;
+  final WebViewXController iawvctrl;
 
   @override
   State<StatefulWidget> createState() => _BarcodeScannerState();
@@ -143,8 +146,14 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
         result = scanData;
       });
       widget.appController.barcodeResult.value = scanData.code.toString();
-      log(widget.appController.barcodeResult.value);
       controller.pauseCamera();
+      log(widget.appController.barcodeResult.value);
+      widget.iawvctrl
+          .evalRawJavascript('window.fromFlutter("${scanData.code.toString()}")', inGlobalContext: false)
+          .then((value) => log(value.toString()));
+
+      Get.back();
+      return;
     });
   }
 

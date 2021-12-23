@@ -18,6 +18,8 @@ var initailData =
             <h1>JavaScript Handlers</h1>
             <button onclick="call()"> Send Data </button>
 
+             <input type="text" id="text-field">
+
 
             <script>
 
@@ -26,12 +28,9 @@ var initailData =
                 // console.log(1);
               }
 
-              function fromFlutter(count) {
+               function fromFlutter(data) {
               // Do something
-              
               console.log("This is working now!!!");
-              console.log(1);
-              return;
               }
 
               window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {

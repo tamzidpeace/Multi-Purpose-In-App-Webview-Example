@@ -10,7 +10,6 @@ import 'package:weview/view/barcode_scanner.dart';
 class Webview extends StatelessWidget {
   Webview({Key? key}) : super(key: key);
   final AppController _ctrl = Get.put<AppController>(AppController());
-  late InAppWebViewController xyz;
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +28,16 @@ class Webview extends StatelessWidget {
             initialOptions: _ctrl.options,
             onWebViewCreated: (InAppWebViewController controller) async {
               // await _ctrl.getInfo(controller);
-              xyz = controller;
+              controller.evaluateJavascript(source: 'fromFlutter("pop")');
             },
             onLoadStart: (controller, url) async {
               log('message');
-              await _ctrl.getInfo(controller);
-              _ctrl.sendCodeData(controller, '123');
+              // await _ctrl.getInfo(controller);
+              // _ctrl.sendCodeData(controller, '123');
+              controller.evaluateJavascript(source: 'fromFlutter("pop")');
             },
             onConsoleMessage: (InAppWebViewController controller, consoleMessage) async {
-              if (consoleMessage.message.toString() == 'bcs') {
-                log('console Message: ' + consoleMessage.message.toString());
-                controller.evaluateJavascript(source: """fromFlutter("1")""");
-              } else {
-                log('qr code: ' + _ctrl.barcodeResult.toString());
-                return;
-              }
+              controller.evaluateJavascript(source: 'fromFlutter("pop")');
             },
           ),
         ),
@@ -51,11 +45,11 @@ class Webview extends StatelessWidget {
         const Divider(height: 2, color: Colors.grey),
         ElevatedButton(
             onPressed: () {
-              Get.to(
-                () => BarcodeScanner(
-                  appController: _ctrl,
-                ),
-              );
+              // Get.to(
+              //   () => BarcodeScanner(
+              //     appController: _ctrl,
+              //   ),
+              // );
             },
             child: Text('data')),
         //* info:: camera
