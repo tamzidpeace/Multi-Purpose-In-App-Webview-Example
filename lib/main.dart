@@ -1,4 +1,6 @@
 import 'dart:io' show Platform;
+import 'package:get/get.dart';
+
 import 'utils/export.util.dart';
 
 void main() async {
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return const GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: ManGoInAppWebView(),
     );

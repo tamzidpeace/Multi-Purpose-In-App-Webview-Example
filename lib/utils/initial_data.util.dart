@@ -1,5 +1,5 @@
-var initailData = 
-"""
+var initailData =
+    """
     
     <!DOCTYPE html>
     <html lang="en">
@@ -16,7 +16,7 @@ var initailData =
         <body>
 
             <h1>JavaScript Handlers</h1>
-            <button onclick="call()"> Call </button>
+            <button onclick="call()"> Send Data </button>
 
 
             <script>

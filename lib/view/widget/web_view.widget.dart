@@ -21,7 +21,7 @@ class Webview extends StatelessWidget {
         //* info:: webview
         Container(
           padding: const EdgeInsets.all(8),
-          height: MediaQuery.of(context).size.height * 0.6,
+          height: MediaQuery.of(context).size.height * 0.8,
           child: InAppWebView(
             initialData: InAppWebViewInitialData(data: initailData),
             initialUrlRequest: URLRequest(url: Uri.parse(ksIntialUrl)),
@@ -33,11 +33,7 @@ class Webview extends StatelessWidget {
               log('console Message: ' + consoleMessage.toString());
               if (consoleMessage.message.toString() == 'bcs') {
                 ///* info:: bcs = bar code scan
-                log('scan now');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const BarcodeScanner()),
-                );
+                log(_ctrl.barcodeResult.value);
               }
             },
           ),
@@ -46,68 +42,12 @@ class Webview extends StatelessWidget {
         const Divider(height: 2, color: Colors.grey),
         ElevatedButton(
             onPressed: () {
-              // _ctrl.qrViewController?.resumeCamera();
-              showDialog<void>(
-                context: context,
-                barrierDismissible: false, // user must tap button!
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('AlertDialog Title'),
-                    content: SingleChildScrollView(
-                      child: ListBody(
-                        children: <Widget>[
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            width: MediaQuery.of(context).size.width,
-                            height: 200,
-                            child: QRView(
-                              key: _ctrl.qrKey,
-                              onQRViewCreated: _ctrl.onQRViewCreated,
-                              overlay: QrScannerOverlayShape(
-                                borderColor: Colors.blue,
-                                borderRadius: 10,
-                                borderLength: 40,
-                                borderWidth: 5,
-                                cutOutSize: (MediaQuery.of(context).size.height * 0.22),
-                              ),
-                              onPermissionSet: (ctrl, p) => _ctrl.onPermissionSet(context, ctrl, p),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('Approve'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
+              Get.to(() => BarcodeScanner(
+                    appController: _ctrl,
+                  ));
             },
             child: Text('data')),
         //* info:: camera
-        // Expanded(
-        //   child: Container(
-        //     padding: const EdgeInsets.all(8),
-        //     width: MediaQuery.of(context).size.width,
-        //     child: QRView(
-        //       key: _ctrl.qrKey,
-        //       onQRViewCreated: _ctrl.onQRViewCreated,
-        //       overlay: QrScannerOverlayShape(
-        //         borderColor: Colors.blue,
-        //         borderRadius: 10,
-        //         borderLength: 40,
-        //         borderWidth: 5,
-        //         cutOutSize: (MediaQuery.of(context).size.height * 0.22),
-        //       ),
-        //       onPermissionSet: (ctrl, p) => _ctrl.onPermissionSet(context, ctrl, p),
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }

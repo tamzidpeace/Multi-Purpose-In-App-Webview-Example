@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:location/location.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -17,6 +18,7 @@ class AppController extends GetxController {
   Map deviceInfo = {};
   QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  final RxString barcodeResult = RxString('initialResult');
 
   @override
   onInit() {
@@ -27,11 +29,8 @@ class AppController extends GetxController {
       },
     );
 
-    
     super.onInit();
   }
-
- 
 
   @override
   void onClose() {
@@ -92,6 +91,8 @@ class AppController extends GetxController {
     controller.scannedDataStream.listen((scanData) {
       res = scanData.code.toString();
     });
+    log(res);
+    controller.pauseCamera();
     return res;
   }
 

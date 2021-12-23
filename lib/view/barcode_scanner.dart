@@ -4,9 +4,12 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:weview/utils/export.util.dart';
 
 class BarcodeScanner extends StatefulWidget {
-  const BarcodeScanner({Key? key}) : super(key: key);
+  BarcodeScanner({Key? key, required this.appController}) : super(key: key);
+
+  final AppController appController;
 
   @override
   State<StatefulWidget> createState() => _BarcodeScannerState();
@@ -139,6 +142,9 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
       setState(() {
         result = scanData;
       });
+      widget.appController.barcodeResult.value = scanData.code.toString();
+      log(widget.appController.barcodeResult.value);
+      controller.pauseCamera();
     });
   }
 
