@@ -10,6 +10,7 @@ import 'package:weview/view/barcode_scanner.dart';
 class Webview extends StatelessWidget {
   Webview({Key? key}) : super(key: key);
   final AppController _ctrl = Get.put<AppController>(AppController());
+  late InAppWebViewController xyz;
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +28,21 @@ class Webview extends StatelessWidget {
             initialUrlRequest: URLRequest(url: Uri.parse(ksIntialUrl)),
             initialOptions: _ctrl.options,
             onWebViewCreated: (InAppWebViewController controller) async {
-              await _ctrl.getInfo(controller);
+              // await _ctrl.getInfo(controller);
+              xyz = controller;
             },
-            onConsoleMessage: (controller, consoleMessage) {
-              log('console Message: ' + consoleMessage.toString());
+            onLoadStart: (controller, url) async {
+              log('message');
+              await _ctrl.getInfo(controller);
+              _ctrl.sendCodeData(controller, '123');
+            },
+            onConsoleMessage: (InAppWebViewController controller, consoleMessage) async {
               if (consoleMessage.message.toString() == 'bcs') {
-                ///* info:: bcs = bar code scan
-                log(_ctrl.barcodeResult.value);
+                log('console Message: ' + consoleMessage.message.toString());
+                controller.evaluateJavascript(source: """fromFlutter("1")""");
+              } else {
+                log('qr code: ' + _ctrl.barcodeResult.toString());
+                return;
               }
             },
           ),
@@ -42,9 +51,11 @@ class Webview extends StatelessWidget {
         const Divider(height: 2, color: Colors.grey),
         ElevatedButton(
             onPressed: () {
-              Get.to(() => BarcodeScanner(
-                    appController: _ctrl,
-                  ));
+              Get.to(
+                () => BarcodeScanner(
+                  appController: _ctrl,
+                ),
+              );
             },
             child: Text('data')),
         //* info:: camera

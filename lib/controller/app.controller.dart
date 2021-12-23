@@ -38,6 +38,8 @@ class AppController extends GetxController {
     super.onClose();
   }
 
+  
+
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
     android: AndroidInAppWebViewOptions(
       useHybridComposition: true,
@@ -50,7 +52,7 @@ class AppController extends GetxController {
       callback: (args) async {
         // log('arags: ' + args.toString());
         //* args = [ip, location, connection, mac]
-        String _args = args[4].toString();
+        String _args = args[2].toString();
 
         //! important:: unable to call async function in switch-case. so I have used if else
 
@@ -81,6 +83,17 @@ class AppController extends GetxController {
           // log('barcode: barcode');
           // return {'barcode': res};
         }
+      },
+    );
+  }
+
+  Future<void> sendCodeData(controller, String data) async {
+    log('here');
+    controller.addJavaScriptHandler(
+      handlerName: 'handlerFoo',
+      callback: (args) async {
+        log('sendcode data');
+        return data;
       },
     );
   }
@@ -164,4 +177,5 @@ class AppController extends GetxController {
     final map = deviceInfo.toMap();
     return map;
   }
+
 }

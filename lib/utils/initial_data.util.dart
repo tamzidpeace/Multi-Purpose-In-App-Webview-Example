@@ -23,6 +23,15 @@ var initailData =
 
               const call = () => {
                 console.log('bcs');
+                // console.log(1);
+              }
+
+              function fromFlutter(count) {
+              // Do something
+              
+              console.log("This is working now!!!");
+              console.log(1);
+              return;
               }
 
               window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {
@@ -31,9 +40,16 @@ var initailData =
                     .then(function(result) {
                         console.log(JSON.stringify(result));
                   });
+
+
+                  window.flutter_inappwebview.callHandler('handlerFoo').then(function(result) {
+                    console.log('1234');
+                  });
               });
 
-                
+              
+          
+
             </script>
 
         </body>
