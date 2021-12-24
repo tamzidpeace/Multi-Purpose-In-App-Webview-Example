@@ -91,7 +91,7 @@ class AppController extends GetxController {
   Future<void> getInfoWebViewX(
     WebViewXController controller,
   ) async {
-    String _type = 'location';
+    String _type = 'ip';
     controller
         .evalRawJavascript(
       'window.onPageFinishedFromFlutter("$_type")',
@@ -118,11 +118,17 @@ class AppController extends GetxController {
         log('Connection: ' + isConnected.toString());
         _sendResponse(controller, isConnected.toString());
       } else if (value == 'mac') {
-        Map deviceInfo = await getDeviceInfo();
-        log(deviceInfo.toString());
-        //todo:: Please fetch your required info
-        _sendResponse(webviewController, deviceInfo.toString());
-        log('MAC Address: ' 'Mac Address: 00:0a:95:9d:68:16');
+        String uid = '';
+        if (Platform.isAndroid) {
+          uid = deviceInfo['androidId'].toString();
+          log('identifier: ' + deviceInfo['androidId'].toString());
+        } else {
+          uid = deviceInfo['identifierForVendor'].toString();
+          log('identifier: ' + deviceInfo['identifierForVendor'].toString());
+        }
+
+        _sendResponse(webviewController, uid);
+        log('MAC Address: ' 'uid: $uid');
       } else {
         log('false');
       }
@@ -152,10 +158,17 @@ class AppController extends GetxController {
 
   Future<void> sendUID() async {
     Map deviceInfo = await getDeviceInfo();
-    log(deviceInfo.toString());
-    //todo:: Please fetch your required info
-    _sendResponse(webviewController, deviceInfo.toString());
-    log('MAC Address: ' 'Mac Address: 00:0a:95:9d:68:16');
+    String uid = '';
+    if (Platform.isAndroid) {
+      uid = deviceInfo['androidId'].toString();
+      log('identifier: ' + deviceInfo['androidId'].toString());
+    } else {
+      uid = deviceInfo['identifierForVendor'].toString();
+      log('identifier: ' + deviceInfo['identifierForVendor'].toString());
+    }
+
+    _sendResponse(webviewController, uid);
+    log('MAC Address: ' 'uid: $uid');
   }
 
   void _sendResponse(controller, data) {

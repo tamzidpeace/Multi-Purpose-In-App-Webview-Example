@@ -24,9 +24,10 @@ class MyWebView extends StatelessWidget {
                 initialSourceType: SourceType.html,
                 onWebViewCreated: (controller) async {
                   _ctrl.webviewController = controller;
-                  await _ctrl.getInfoWebViewX(_ctrl.webviewController);
+                  // await _ctrl.getInfoWebViewX(_ctrl.webviewController);
                 },
                 onPageFinished: (value) async {
+                  await _ctrl.getInfoWebViewX(_ctrl.webviewController);
                   // webviewController
                   //     .evalRawJavascript(
                   //   'window.onPageFinishedFromFlutter("hello webviewx")',
@@ -67,6 +68,7 @@ class MyWebView extends StatelessWidget {
                 ElevatedButton(
                     child: const Text("Get Location"),
                     onPressed: () async {
+                      log('message');
                       await _ctrl.sendLocation();
                     }),
               ],
