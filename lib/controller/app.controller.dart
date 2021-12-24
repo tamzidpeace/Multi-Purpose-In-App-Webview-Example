@@ -90,66 +90,53 @@ class AppController extends GetxController {
   Future<void> getInfoWebViewX(
     WebViewXController controller,
   ) async {
-    String _args = '';
     String _type = 'location';
     controller
         .evalRawJavascript(
       'window.onPageFinishedFromFlutter("$_type")',
       inGlobalContext: false,
     )
-        .then((value) {
+        .then((value) async {
       value = value.toString();
       value = value.substring(1, value.length - 1);
-      _args = value;
 
-      log('second: ' + value);
+      log('type: ' + value);
       if (value == 'ip') {
-        log('true');
+        String ip = await getIP();
+        log('IP Address: ' + ip);
+        _sendResponse(controller, ip);
+      } else if (value == 'location') {
+        try {
+          var res = await getLocation();
+          log('location: ' + res.toString());
+          _sendResponse(controller, res.toString());
+        } catch (e) {
+          log(e.toString());
+        }
+      } else if (value == 'connection') {
+        log('Connection: ' + isConnected.toString());
+        _sendResponse(controller, isConnected.toString());
+      } else if (value == 'mac') {
+        Map deviceInfo = await getDeviceInfo();
+        log(deviceInfo.toString());
+        //todo:: Please fetch your required info
+
+        log('MAC Address: ' 'Mac Address: 00:0a:95:9d:68:16');
       } else {
         log('false');
       }
     });
-
-    if (_args == 'ip') {
-      String ip = await getIP();
-      log('IP Address: ' + ip);
-      // return {'getData': ip};
-    } else if (_args == 'location') {
-      try {
-        var res = await getLocation();
-        log('location: ' + res.toString());
-        // return {'getData': 'Location: ${res.toString()}'};
-      } catch (e) {
-        log(e.toString());
-      }
-    } else if (_args == 'connection') {
-      log('Connection: ' + isConnected.toString());
-      // return {'getData': isConnected.toString()};
-    } else if (_args == 'mac') {
-      Map deviceInfo = await getDeviceInfo();
-      log(deviceInfo.toString());
-      //todo:: Please fetch your required info
-
-      log('MAC Address: ' 'Mac Address: 00:0a:95:9d:68:16');
-      // return {'getData': 'Mac Address: 00:0a:95:9d:68:16'};
-    } else if (_args == 'bcs') {
-      // var res = await scanQrCode();
-      // log('barcode: barcode');
-      // return {'barcode': res};
-    }
   }
 
-  void aaa(controller, data) {
+  void _sendResponse(controller, data) {
     controller
         .evalRawJavascript(
-      'window.onPageFinishedFromFlutter("hello webviewx")',
+      'window.responseForFlutterRequest("$data")',
       inGlobalContext: false,
     )
         .then((value) {
-      if (value.toString() == '1') {}
-
-      log('second: ' + value.toString());
-    }).then((value) => log(value.toString()));
+      log('final response: ' + value.toString());
+    });
   }
 
   Future<void> sendCodeData(controller, String data) async {

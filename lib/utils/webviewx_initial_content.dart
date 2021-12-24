@@ -14,10 +14,15 @@ var webviewxInitialContent = """
           <body>
       
               
-            
+              <h3 for="">Initail Requst Result: </h3> 
+               <h4 id="result">Hello</h4>
+
+               <br/>
+               <br/>
+               <br/>
       
-                <label for="">Scan result</label> 
-               <textarea name="" id="text-field" cols="30" rows="10" disabled></textarea>
+              <label for="">Scan result</label> 
+               <textarea name="" id="text-field" cols="30" rows="10" ></textarea>
       
       
           <script>
@@ -35,7 +40,8 @@ var webviewxInitialContent = """
 
             function responseForFlutterRequest(data) {
               console.log(data);
-              return 2;
+              document.getElementById("result").innerHTML = data;
+              return;
             }
 
 
