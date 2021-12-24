@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:location/location.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:webviewx/webviewx.dart';
 import 'package:weview/utils/export.util.dart';
 
 class AppController extends GetxController {
@@ -37,8 +39,6 @@ class AppController extends GetxController {
     subscription.cancel();
     super.onClose();
   }
-
-  
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
     android: AndroidInAppWebViewOptions(
@@ -85,6 +85,71 @@ class AppController extends GetxController {
         }
       },
     );
+  }
+
+  Future<void> getInfoWebViewX(
+    WebViewXController controller,
+  ) async {
+    String _args = '';
+    String _type = 'location';
+    controller
+        .evalRawJavascript(
+      'window.onPageFinishedFromFlutter("$_type")',
+      inGlobalContext: false,
+    )
+        .then((value) {
+      value = value.toString();
+      value = value.substring(1, value.length - 1);
+      _args = value;
+
+      log('second: ' + value);
+      if (value == 'ip') {
+        log('true');
+      } else {
+        log('false');
+      }
+    });
+
+    if (_args == 'ip') {
+      String ip = await getIP();
+      log('IP Address: ' + ip);
+      // return {'getData': ip};
+    } else if (_args == 'location') {
+      try {
+        var res = await getLocation();
+        log('location: ' + res.toString());
+        // return {'getData': 'Location: ${res.toString()}'};
+      } catch (e) {
+        log(e.toString());
+      }
+    } else if (_args == 'connection') {
+      log('Connection: ' + isConnected.toString());
+      // return {'getData': isConnected.toString()};
+    } else if (_args == 'mac') {
+      Map deviceInfo = await getDeviceInfo();
+      log(deviceInfo.toString());
+      //todo:: Please fetch your required info
+
+      log('MAC Address: ' 'Mac Address: 00:0a:95:9d:68:16');
+      // return {'getData': 'Mac Address: 00:0a:95:9d:68:16'};
+    } else if (_args == 'bcs') {
+      // var res = await scanQrCode();
+      // log('barcode: barcode');
+      // return {'barcode': res};
+    }
+  }
+
+  void aaa(controller, data) {
+    controller
+        .evalRawJavascript(
+      'window.onPageFinishedFromFlutter("hello webviewx")',
+      inGlobalContext: false,
+    )
+        .then((value) {
+      if (value.toString() == '1') {}
+
+      log('second: ' + value.toString());
+    }).then((value) => log(value.toString()));
   }
 
   Future<void> sendCodeData(controller, String data) async {
@@ -177,5 +242,4 @@ class AppController extends GetxController {
     final map = deviceInfo.toMap();
     return map;
   }
-
 }

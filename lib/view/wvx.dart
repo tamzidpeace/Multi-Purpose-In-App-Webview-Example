@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:webviewx/webviewx.dart';
 import 'package:weview/utils/export.util.dart';
+import 'package:weview/utils/webviewx_initial_content.dart';
 import 'package:weview/view/barcode_scanner.dart';
 
 class MyWebView extends StatelessWidget {
@@ -20,50 +21,30 @@ class MyWebView extends StatelessWidget {
             SizedBox(
               height: 300,
               child: WebViewX(
-                initialContent:
-                    """
-                    <!DOCTYPE html>
-          <html lang="en">
-          
-          <head>
-      
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-      
-              <style> </style>
-      
-          </head>
-      
-          <body>
-      
-              
-            
-      
-                <label for="">Scan result</label> 
-               <textarea name="" id="text-field" cols="30" rows="10" disabled></textarea>
-      
-      
-              <script>
-          function myFunction() {
-              // alert("I am an alert box!");
-              // console.log('working');
-              return 'working';
-          }
-      
-          function fromFlutter(data) {
-                // Do something
-                console.log(data);
-                document.getElementById("text-field").value = data;
-                }
-          </script>
-      
-          </body>
-      
-          </html>>
-      
-      """,
+                initialContent: webviewxInitialContent,
                 initialSourceType: SourceType.html,
-                onWebViewCreated: (controller) => webviewController = controller,
+                onWebViewCreated: (controller) async {
+                  webviewController = controller;
+                  await _ctrl.getInfoWebViewX(webviewController);
+                },
+                onPageFinished: (value) async {
+                  // webviewController
+                  //     .evalRawJavascript(
+                  //   'window.onPageFinishedFromFlutter("hello webviewx")',
+                  //   inGlobalContext: false,
+                  // )
+                  //     .then((value) {
+                  //   if (value.toString() == '1') {
+                  //     webviewController.evalRawJavascript(
+                  //       'window.responseForFlutterRequest("192.168.0.1")',
+                  //       inGlobalContext: false,
+                  //     );
+                  //   }
+
+                  //   log('second: '  + value.toString());
+                  // }).then((value) => log(value.toString()));
+                  // await _ctrl.getInfoWebViewX(webviewController);
+                },
                 height: 250,
                 width: double.infinity,
               ),
