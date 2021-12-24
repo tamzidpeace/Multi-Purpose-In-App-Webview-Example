@@ -21,6 +21,7 @@ class AppController extends GetxController {
   QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   final RxString barcodeResult = RxString('initialResult');
+  late WebViewXController webviewController;
 
   @override
   onInit() {
@@ -120,12 +121,41 @@ class AppController extends GetxController {
         Map deviceInfo = await getDeviceInfo();
         log(deviceInfo.toString());
         //todo:: Please fetch your required info
-
+        _sendResponse(webviewController, deviceInfo.toString());
         log('MAC Address: ' 'Mac Address: 00:0a:95:9d:68:16');
       } else {
         log('false');
       }
     });
+  }
+
+  Future<void> sendIP() async {
+    String ip = await getIP();
+    log('IP Address: ' + ip);
+    _sendResponse(webviewController, ip);
+  }
+
+  Future<void> sendLocation() async {
+    try {
+      var res = await getLocation();
+      log('location: ' + res.toString());
+      _sendResponse(webviewController, res.toString());
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<void> sendConnection() async {
+    log('Connection: ' + isConnected.toString());
+    _sendResponse(webviewController, isConnected.toString());
+  }
+
+  Future<void> sendUID() async {
+    Map deviceInfo = await getDeviceInfo();
+    log(deviceInfo.toString());
+    //todo:: Please fetch your required info
+    _sendResponse(webviewController, deviceInfo.toString());
+    log('MAC Address: ' 'Mac Address: 00:0a:95:9d:68:16');
   }
 
   void _sendResponse(controller, data) {

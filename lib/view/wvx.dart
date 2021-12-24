@@ -9,7 +9,6 @@ import 'package:weview/view/barcode_scanner.dart';
 class MyWebView extends StatelessWidget {
   MyWebView({Key? key}) : super(key: key);
 
-  late WebViewXController webviewController;
   final AppController _ctrl = Get.put<AppController>(AppController());
 
   @override
@@ -19,13 +18,13 @@ class MyWebView extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.8,
+              height: MediaQuery.of(context).size.height * 0.7,
               child: WebViewX(
                 initialContent: webviewxInitialContent,
                 initialSourceType: SourceType.html,
                 onWebViewCreated: (controller) async {
-                  webviewController = controller;
-                  await _ctrl.getInfoWebViewX(webviewController);
+                  _ctrl.webviewController = controller;
+                  await _ctrl.getInfoWebViewX(_ctrl.webviewController);
                 },
                 onPageFinished: (value) async {
                   // webviewController
@@ -52,9 +51,44 @@ class MyWebView extends StatelessWidget {
             ElevatedButton(
               child: const Text("Scan"),
               onPressed: () {
-                Get.to(() => BarcodeScanner(appController: _ctrl, iawvctrl: webviewController));
+                Get.to(() => BarcodeScanner(appController: _ctrl, iawvctrl: _ctrl.webviewController));
               },
-            )
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  child: const Text("Get IP"),
+                  onPressed: () async {
+                    await _ctrl.sendIP();
+                  },
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                    child: const Text("Get Location"),
+                    onPressed: () async {
+                      await _ctrl.sendLocation();
+                    }),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  child: const Text("Get Connection"),
+                  onPressed: () async {
+                    _ctrl.sendConnection();
+                  },
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  child: const Text("Get UID"),
+                  onPressed: () async {
+                    _ctrl.sendUID();
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ),

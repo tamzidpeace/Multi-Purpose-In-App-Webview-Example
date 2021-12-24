@@ -14,12 +14,12 @@ var webviewxInitialContent = """
           <body>
       
               
-              <h3 for="">Initail Requst Result: </h3> 
-               <h4 id="result">Hello</h4>
+              <h3 for="">Requst Result: </h3> 
+              <h4 id="result">Hello</h4>               
 
-               <br/>
-               <br/>
-               <br/>
+              <br/> <br/>
+               
+               
       
               <label for="">Scan result</label> 
                <textarea name="" id="text-field" cols="30" rows="10" ></textarea>
