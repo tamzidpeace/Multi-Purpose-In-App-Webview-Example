@@ -111,6 +111,8 @@ class AppController extends GetxController {
         final String base64Image = base64Encode(imageBytes);
         final String image = 'data:image/png;base64,' + base64Image;
         // log('image: ' + image);
+        Get.back();
+        Get.back();
         webviewController
             .evalRawJavascript(
           'window.setImage("$image")',
