@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:weview/utils/export.util.dart';
 
 class AppWebView extends StatelessWidget {
@@ -22,26 +21,7 @@ class AppWebView extends StatelessWidget {
           onPageFinished: (value) async {
             await _ctrl.setIPandUI();
           },
-          dartCallBacks: {
-            DartCallback(
-              name: ksScanCallBack,
-              callBack: (msg) {
-                log('scan');
-                Get.to(
-                  () => BarcodeScanner(
-                    appController: _ctrl,
-                    iawvctrl: _ctrl.webviewController,
-                  ),
-                );
-              },
-            ),
-            DartCallback(
-              name: ksTakeImageCallBack,
-              callBack: (msg) {
-                log('take image');
-              },
-            ),
-          },
+          dartCallBacks: _ctrl.appDartCallBacks,
         ),
       ),
     );

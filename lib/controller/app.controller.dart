@@ -3,22 +3,11 @@ import 'dart:developer';
 import 'package:weview/utils/export.util.dart';
 
 class AppController extends GetxController {
-  double progress = 0;
-  late StreamSubscription subscription;
-  late bool isConnected;
-  late String platformVersion;
-  late LocationData locationData;
   Map deviceInfo = {};
   QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   final RxString barcodeResult = RxString('initialResult');
   late WebViewXController webviewController;
-
-  @override
-  void onClose() {
-    subscription.cancel();
-    super.onClose();
-  }
 
   Future<void> setIPandUI() async {
     String ip = await getIP();
@@ -87,4 +76,25 @@ class AppController extends GetxController {
     final map = deviceInfo.toMap();
     return map;
   }
+
+  Set<DartCallback> appDartCallBacks = {
+    DartCallback(
+      name: ksScanCallBack,
+      callBack: (msg) {
+        log('scan');
+        Get.to(
+          () => BarcodeScanner(
+            appController: Get.put<AppController>(AppController()),
+            iawvctrl: Get.put<AppController>(AppController()).webviewController,
+          ),
+        );
+      },
+    ),
+    DartCallback(
+      name: ksTakeImageCallBack,
+      callBack: (msg) {
+        log('take image');
+      },
+    ),
+  };
 }
