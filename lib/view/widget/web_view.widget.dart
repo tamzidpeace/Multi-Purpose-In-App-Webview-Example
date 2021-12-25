@@ -24,7 +24,7 @@ class Webview extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.8,
           child: InAppWebView(
             initialData: InAppWebViewInitialData(data: initailData),
-            initialUrlRequest: URLRequest(url: Uri.parse(ksIntialUrl)),
+            initialUrlRequest: URLRequest(url: Uri.parse(ksURL)),
             initialOptions: _ctrl.options,
             onWebViewCreated: (InAppWebViewController controller) async {
               // await _ctrl.getInfo(controller);
