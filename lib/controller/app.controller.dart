@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:weview/utils/export.util.dart';
 
 class AppController extends GetxController {
-  Map deviceInfo = {};
+  late WebViewXController webviewController;
   QRViewController? qrViewController;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   final RxString barcodeResult = RxString('initialResult');
-  late WebViewXController webviewController;
+  Map deviceInfo = {};
 
   Future<void> setIPandUI() async {
     String ip = await getIP();
@@ -97,4 +97,6 @@ class AppController extends GetxController {
       },
     ),
   };
+
+  //* end
 }
