@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
 import 'package:weview/utils/export.util.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:weview/view/take_image.dart';
 
 class AppController extends GetxController {
   late WebViewXController webviewController;
@@ -92,11 +95,37 @@ class AppController extends GetxController {
     ),
     DartCallback(
       name: ksTakeImageCallBack,
-      callBack: (msg) {
+      callBack: (msg) async {
+        Get.to(TakeImage());
         log('take image');
       },
     ),
   };
 
+  Future<void> takeImage() async {
+    try {
+      final ImagePicker _picker = ImagePicker();
+      final XFile? _image = await _picker.pickImage(source: ImageSource.camera);
+      if (_image != null) {
+        final List<int> imageBytes = await _image.readAsBytes();
+        final String base64Image = base64Encode(imageBytes);
+        final String image = 'data:image/png;base64,' + base64Image;
+        // log('image: ' + image);
+        webviewController
+            .evalRawJavascript(
+          'window.setImage("$image")',
+          inGlobalContext: false,
+        )
+            .then((value) {
+          log('final response: ' + value.toString());
+        });
+      } else {
+        log('image not selected');
+        return;
+      }
+    } on PlatformException catch (e) {
+      log("Failed to Pick Image $e");
+    }
+  }
   //* end
 }
