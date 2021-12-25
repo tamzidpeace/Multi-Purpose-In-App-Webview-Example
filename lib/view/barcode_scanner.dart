@@ -139,20 +139,33 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
-      widget.appController.barcodeResult.value = scanData.code.toString();
-      controller.pauseCamera();
-      log(widget.appController.barcodeResult.value);
-      widget.iawvctrl
-          .evalRawJavascript('window.setScanData("${scanData.code.toString()}")', inGlobalContext: false)
-          .then((value) => log(value.toString()));
+    controller.scannedDataStream.listen(
+      (scanData) async {
+        setState(() {
+          result = scanData;
+        });
+        
+        widget.appController.barcodeResult.value = scanData.code.toString();
+        controller.pauseCamera();
+        log(scanData.code.toString());
+        String multilineRes = scanData.code.toString();
+        String res = '';
+        for (var i = 0; i < multilineRes.length - 1; i++) {
+          if (multilineRes[i] != '\n') {
+            res += multilineRes[i];
+          } else {
+            break;
+          }
+        }
 
-      Get.back();
-      return;
-    });
+        await widget.iawvctrl
+            .evalRawJavascript('window.setScanData("$res")', inGlobalContext: false)
+            .then((value) => log(value.toString()));
+
+        Get.back();
+        return;
+      },
+    );
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {

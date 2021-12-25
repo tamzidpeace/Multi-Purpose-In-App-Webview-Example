@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
+import 'package:weview/controller/take_image_controller.dart';
 import 'package:weview/utils/export.util.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:weview/view/take_image.dart';
@@ -96,7 +97,7 @@ class AppController extends GetxController {
     DartCallback(
       name: ksTakeImageCallBack,
       callBack: (msg) async {
-        Get.to(TakeImage());
+        Get.to(() => TakeImage());
         log('take image');
       },
     ),
@@ -121,6 +122,7 @@ class AppController extends GetxController {
             .then((value) {
           log('final response: ' + value.toString());
         });
+        Get.delete<TakeImageController>();
       } else {
         log('image not selected');
         return;
@@ -129,5 +131,10 @@ class AppController extends GetxController {
       log("Failed to Pick Image $e");
     }
   }
+  
+  Future<void> prcessQrCodeScan() async {
+    
+  }
+  
   //* end
 }
