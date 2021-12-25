@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:webviewx/webviewx.dart';
 import 'package:weview/utils/export.util.dart';
-import 'package:weview/utils/webviewx_initial_content.dart';
 import 'package:weview/view/barcode_scanner.dart';
 
 class MyWebView extends StatelessWidget {
@@ -17,38 +16,27 @@ class MyWebView extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7,
-              child: WebViewX(
-                initialContent: webviewxInitialContent,
-                initialSourceType: SourceType.html,
-                onWebViewCreated: (controller) async {
-                  _ctrl.webviewController = controller;
-                  // await _ctrl.getInfoWebViewX(_ctrl.webviewController);
-                },
-                onPageFinished: (value) async {
-                  await _ctrl.getInfoWebViewX(_ctrl.webviewController);
-                  // webviewController
-                  //     .evalRawJavascript(
-                  //   'window.onPageFinishedFromFlutter("hello webviewx")',
-                  //   inGlobalContext: false,
-                  // )
-                  //     .then((value) {
-                  //   if (value.toString() == '1') {
-                  //     webviewController.evalRawJavascript(
-                  //       'window.responseForFlutterRequest("192.168.0.1")',
-                  //       inGlobalContext: false,
-                  //     );
-                  //   }
-
-                  //   log('second: '  + value.toString());
-                  // }).then((value) => log(value.toString()));
-                  // await _ctrl.getInfoWebViewX(webviewController);
-                },
-                height: 250,
-                width: double.infinity,
+            Expanded(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: WebViewX(
+                  initialContent: 'https://atiar.info/wvx/index.html',
+                  initialSourceType: SourceType.url,
+                  onWebViewCreated: (controller) async {
+                    _ctrl.webviewController = controller;
+                    // await _ctrl.getInfoWebViewX(_ctrl.webviewController);
+                  },
+                  onPageFinished: (value) async {
+                    // await _ctrl.getInfoWebViewX(_ctrl.webviewController);
+                    await _ctrl.setIPandUI();
+                  },
+                  height: 250,
+                  width: double.infinity,
+                ),
               ),
             ),
+
+            /* 
             ElevatedButton(
               child: const Text("Scan"),
               onPressed: () {
@@ -90,7 +78,7 @@ class MyWebView extends StatelessWidget {
                   },
                 ),
               ],
-            ),
+            ), */
           ],
         ),
       ),

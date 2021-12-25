@@ -135,6 +135,37 @@ class AppController extends GetxController {
     });
   }
 
+  Future<void> setIPandUI() async {
+    String ip = await getIP();
+    webviewController
+        .evalRawJavascript(
+      'window.setIP("$ip")',
+      inGlobalContext: false,
+    )
+        .then((value) {
+      log('final response: ' + value.toString());
+    });
+
+    Map deviceInfo = await getDeviceInfo();
+    String uid = '';
+    if (Platform.isAndroid) {
+      uid = deviceInfo['androidId'].toString();
+      log('identifier: ' + deviceInfo['androidId'].toString());
+    } else {
+      uid = deviceInfo['identifierForVendor'].toString();
+      log('identifier: ' + deviceInfo['identifierForVendor'].toString());
+    }
+
+    webviewController
+        .evalRawJavascript(
+      'window.setUI("$uid")',
+      inGlobalContext: false,
+    )
+        .then((value) {
+      log('final response: ' + value.toString());
+    });
+  }
+
   Future<void> sendIP() async {
     String ip = await getIP();
     log('IP Address: ' + ip);
