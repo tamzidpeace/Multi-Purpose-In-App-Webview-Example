@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:webviewx/webviewx.dart';
 import 'package:weview/utils/export.util.dart';
+import 'package:weview/utils/webviewx_initial_content.dart';
 import 'package:weview/view/barcode_scanner.dart';
 
 class MyWebView extends StatelessWidget {
@@ -20,15 +21,24 @@ class MyWebView extends StatelessWidget {
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: WebViewX(
+                  key: const ValueKey('webviewx'),
+                  javascriptMode: JavascriptMode.unrestricted,
                   initialContent: 'https://atiar.info/wvx/index.html',
-                  initialSourceType: SourceType.url,
                   onWebViewCreated: (controller) async {
                     _ctrl.webviewController = controller;
-                    // await _ctrl.getInfoWebViewX(_ctrl.webviewController);
                   },
                   onPageFinished: (value) async {
-                    // await _ctrl.getInfoWebViewX(_ctrl.webviewController);
                     await _ctrl.setIPandUI();
+                  },
+                  dartCallBacks: {
+                    DartCallback(
+                      name: 'Scan',
+                      callBack: (msg) => log('scan'),
+                    ),
+                    DartCallback(
+                      name: 'TakeImage',
+                      callBack: (msg) => log('take image'),
+                    ),
                   },
                   height: 250,
                   width: double.infinity,
