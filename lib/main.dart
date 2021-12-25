@@ -1,6 +1,4 @@
 import 'dart:io' show Platform;
-import 'package:weview/view/app_webview.dart';
-
 import 'utils/export.util.dart';
 
 void main() async {

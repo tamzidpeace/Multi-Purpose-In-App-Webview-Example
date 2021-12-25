@@ -1,15 +1,13 @@
 import 'dart:developer';
 import 'dart:io';
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:webviewx/webviewx.dart';
 import 'package:weview/utils/export.util.dart';
 
 class BarcodeScanner extends StatefulWidget {
-  BarcodeScanner({Key? key, required this.appController, required this.iawvctrl}) : super(key: key);
+  const BarcodeScanner({
+    Key? key,
+    required this.appController,
+    required this.iawvctrl,
+  }) : super(key: key);
 
   final AppController appController;
   final WebViewXController iawvctrl;
