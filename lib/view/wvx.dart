@@ -33,7 +33,12 @@ class MyWebView extends StatelessWidget {
                   dartCallBacks: {
                     DartCallback(
                       name: 'Scan',
-                      callBack: (msg) => log('scan'),
+                      callBack: (msg) {
+                        log('scan');
+                        Get.to(
+                          () => BarcodeScanner(appController: _ctrl, iawvctrl: _ctrl.webviewController),
+                        );
+                      },
                     ),
                     DartCallback(
                       name: 'TakeImage',

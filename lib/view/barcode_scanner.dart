@@ -149,7 +149,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
       controller.pauseCamera();
       log(widget.appController.barcodeResult.value);
       widget.iawvctrl
-          .evalRawJavascript('window.fromFlutter("${scanData.code.toString()}")', inGlobalContext: false)
+          .evalRawJavascript('window.setScanData("${scanData.code.toString()}")', inGlobalContext: false)
           .then((value) => log(value.toString()));
 
       Get.back();
