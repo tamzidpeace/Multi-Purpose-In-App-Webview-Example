@@ -3,13 +3,14 @@ import 'utils/export.util.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
+    statusBarColor: Colors.orangeAccent,
   ));
 
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isAndroid) {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
+
   runApp(const MyApp());
 }
 
@@ -18,9 +19,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ManGoInAppWebView(),
+      home: AppWebView(),
     );
   }
 }

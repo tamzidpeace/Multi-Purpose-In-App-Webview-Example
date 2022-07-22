@@ -1,2 +1,4 @@
-const String ksIntialUrl = 'http://192.168.100.175:8081/CmLogin/Login/Login/';
-const String ksGoogleUrl = 'https://www.google.com/search';
+const String ksURL = 'https://atiar.info/wvx';
+const String ksWebViewKey = 'webviewx';
+const String ksScanCallBack = 'Scan';
+const String ksTakeImageCallBack = 'TakeImage';
